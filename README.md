@@ -44,11 +44,11 @@ Todo el análisis que sustenta esta propuesta está documentado carpeta por carp
 | `00-preliminary-vision/` | Contexto del cliente y visión de la solución | ✅ Corte 1 |
 | `01-bpmn/` | Cómo funciona hoy el proceso de negocio analizado | ✅ Corte 1 |
 | `02-modelo-informacion/` | Qué información maneja el negocio y cómo fluye | ✅ Corte 1 |
-| `03-arquitectura-c4/` | Los sistemas actuales y cómo están construidos | 🔜 Corte 2 |
-| `04-infraestructura/` | Dónde corre todo hoy y qué riesgos técnicos tiene | 🔜 Corte 2 |
-| `05-seguridad-stride/` | Análisis de seguridad de la información | 🔜 Corte 2 |
-| `06-normatividad/` | Cumplimiento legal y normativo | 🔜 Corte 2 |
-| `07-opportunities-solutions/` | La solución propuesta y qué brechas cierra | 🔜 Corte 2 |
+| [`03-arquitectura-c4/`](03-arquitectura-c4/informe.md) | Los sistemas actuales y la arquitectura objetivo | 🟡 Corte 2 — listo para validación |
+| [`04-infraestructura/`](04-infraestructura/informe.md) | Dónde corre la solución y qué dependencias técnicas tiene | 🟡 Corte 2 — listo para validación |
+| [`05-seguridad-stride/`](05-seguridad-stride/informe.md) | Análisis de amenazas y controles de seguridad | 🟡 Corte 2 — listo para validación |
+| [`06-normatividad/`](06-normatividad/informe.md) | Cumplimiento legal y normativo | 🟡 Corte 2 — listo para validación |
+| `07-opportunities-solutions/` | La solución propuesta y qué brechas cierra | 🔜 Corte 3 |
 | `08-integracion-vistas/` | Cómo se conecta todo lo anterior en una sola arquitectura | 🔜 Corte 3 |
 | `09-presentacion-final/` | Presentación ejecutiva, plan de implementación y gobernanza | 🔜 Corte 3 |
 

@@ -60,7 +60,7 @@ El objetivo no es construir un sistema. Es rediseñar un proceso apoyándose en 
 | A4 | El ciclo de actualización depende del agendamiento de reuniones (esperas de hasta 3 semanas). |
 | A5 | Cargo + Unidad no constituyen una llave unívoca de identificación de personas. |
 | A6 | La nómina se entrega mes vencido: desfase estructural de hasta 45 días. |
-| A7 | El directorio reside en OneDrive personal, sin esquema tipado ni trazabilidad. |
+| A7 | El directorio reside en OneDrive, sin esquema tipado ni trazabilidad del proceso. La titularidad técnica del espacio debe confirmarse. |
 
 ### 3.4. Goals
 
@@ -117,7 +117,7 @@ El objetivo no es construir un sistema. Es rediseñar un proceso apoyándose en 
 | Sin confirmación de retorno | Confirmación que actualiza el directorio automáticamente |
 | Estado «pendiente» indefinido | Vencimiento y escalamiento automático |
 | Actualización bimensual o trimestral | Actualización mensual sostenida |
-| Archivo en OneDrive personal, sin historial | Fuente institucional con esquema y auditoría |
+| Archivo en OneDrive, sin estados ni auditoría del proceso | Fuente institucional con esquema y auditoría |
 
 ---
 

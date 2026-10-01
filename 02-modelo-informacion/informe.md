@@ -78,7 +78,7 @@ Propagar el `Id Empleado` al directorio mediante un cruce inicial único por cor
 | **Q5** | Ausencia de restricciones de esquema: el archivo fue corrompido por transposición de filas y columnas | Incidente reportado por el cliente | Obligó a reconstruir el documento y a restringir la edición |
 | **Q6** | Sin trazabilidad de cambios: no se registra quién modificó qué ni cuándo | Estructura actual del archivo | Imposible auditar el estado del directorio |
 | **Q7** | La regla que determina qué cargos tienen derecho a extensión es conocimiento tácito | No documentada; reside en Desarrollo Humano | No verificable ni automatizable |
-| **Q8** | El directorio reside en OneDrive personal | Declarado por el cliente | Sin continuidad institucional del activo de información |
+| **Q8** | El directorio reside en OneDrive; la titularidad técnica del espacio está por confirmar | Ubicación confirmada por el cliente | Riesgo de continuidad si el activo depende de un espacio individual |
 
 ### 5.1. Nota sobre Q1 y Q2
 
