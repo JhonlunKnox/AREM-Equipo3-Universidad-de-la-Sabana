@@ -22,10 +22,10 @@ El resultado es que el directorio se actualiza cada dos o tres meses en lugar de
 
 ## Lo que proponemos
 
-- Que el cruce entre la nómina y el directorio se haga solo, y que en lugar de revisar miles de filas la unidad reciba una lista corta con las novedades del mes ya clasificadas: quién entró, quién salió, quién cambió de cargo.
+- Que Power Query compare la nómina y el directorio después de una actualización guiada por la responsable, para revisar excepciones clasificadas en lugar de miles de filas. La publicación de novedades y los cambios sensibles requieren validación humana.
 - Que exista un canal directo con Tecnología para pedir una extensión y, sobre todo, para que Tecnología avise de vuelta cuando ya quedó lista. Hoy ese aviso de retorno no existe.
 - Que el directorio deje de ser un archivo suelto y pase a ser una fuente de información institucional, con estructura, permisos e historial de cambios.
-- Todo construido sobre las herramientas que la Universidad ya tiene licenciadas, para que la unidad pueda implementarlo y mantenerlo sin depender de nosotros ni de aprobaciones externas.
+- Usar la suite Microsoft existente y conectores estándar. La implantación depende de confirmar licencias efectivas, permisos, políticas DLP y aprobación institucional; el equipo no ha verificado esas condiciones en el tenant.
 
 ---
 
@@ -44,19 +44,29 @@ Todo el análisis que sustenta esta propuesta está documentado carpeta por carp
 | `00-preliminary-vision/` | Contexto del cliente y visión de la solución | ✅ Corte 1 |
 | `01-bpmn/` | Cómo funciona hoy el proceso de negocio analizado | ✅ Corte 1 |
 | `02-modelo-informacion/` | Qué información maneja el negocio y cómo fluye | ✅ Corte 1 |
-| [`03-arquitectura-c4/`](03-arquitectura-c4/informe.md) | Los sistemas actuales y la arquitectura objetivo | 🟡 Corte 2 — listo para validación |
-| [`04-infraestructura/`](04-infraestructura/informe.md) | Dónde corre la solución y qué dependencias técnicas tiene | 🟡 Corte 2 — listo para validación |
-| [`05-seguridad-stride/`](05-seguridad-stride/informe.md) | Análisis de amenazas y controles de seguridad | 🟡 Corte 2 — listo para validación |
-| [`06-normatividad/`](06-normatividad/informe.md) | Cumplimiento legal y normativo | 🟡 Corte 2 — listo para validación |
+| [`03-arquitectura-c4/`](03-arquitectura-c4/informe.md) | C4 AS-IS/TO-BE y esquema de datos objetivo | 🟡 Corte 2 — preparado; sustentación pendiente |
+| [`04-infraestructura/`](04-infraestructura/informe.md) | Infraestructura y vista integrada ArchiMate | 🟡 Corte 2 — preparado; sustentación pendiente |
+| [`05-seguridad-stride/`](05-seguridad-stride/informe.md) | Amenazas, priorización y riesgo residual proyectado | 🟡 Corte 2 — preparado; sustentación pendiente |
+| [`06-normatividad/`](06-normatividad/informe.md) | Checklist normativo y brechas por validar | 🟡 Corte 2 — preparado; sustentación pendiente |
 | `07-opportunities-solutions/` | La solución propuesta y qué brechas cierra | 🔜 Corte 3 |
 | `08-integracion-vistas/` | Cómo se conecta todo lo anterior en una sola arquitectura | 🔜 Corte 3 |
 | `09-presentacion-final/` | Presentación ejecutiva, plan de implementación y gobernanza | 🔜 Corte 3 |
+
+### Alcance académico y validación del cliente
+
+Según el [cronograma confirmado del profesor](https://github.com/CesarAVegaF312/AREM-Proyecto-Cliente#4-cronograma-del-semestre-confirmado), el Corte 2 comprende las carpetas **03, 04, 05 y 06**, con sustentación el **3 de octubre de 2026**. La carpeta **07** se trabaja después de esos diagnósticos: su taller está previsto para el 10 de octubre y su entrega para el Corte 3. Esta secuencia actualiza la distribución del enunciado inicial; no se omite 07 por falta de análisis.
+
+El estado académico de la tabla no equivale a aprobación del cliente, despliegue o cumplimiento institucional. Esas validaciones siguen abiertas. Última revisión del repositorio: **2 de octubre de 2026**.
+
+Artefactos complementarios: [esquema de datos TO-BE](03-arquitectura-c4/esquema-datos-to-be.md), [vista ArchiMate](04-infraestructura/vista-integrada-archimate.drawio) y [criterios de priorización STRIDE](05-seguridad-stride/criterios-priorizacion.md).
 
 ---
 
 ## Nota sobre los datos
 
 Este repositorio **no contiene** el directorio de extensiones ni archivos de nómina. Ambos incluyen datos personales de colaboradores de la Universidad y su tratamiento se rige por la Ley 1581 de 2012. Los modelos y ejemplos publicados aquí usan datos ficticios o estructuras sin contenido real.
+
+El [`.gitignore`](.gitignore) excluye carpetas de datos reales y archivos de nómina identificables por su nombre. Esto no detecta todos los datos sensibles ni retira archivos ya versionados: antes de cada publicación se revisan archivos, capturas y metadatos. La restricción se refiere a datos operativos del cliente, no a los créditos o contactos académicos del equipo.
 
 ---
 

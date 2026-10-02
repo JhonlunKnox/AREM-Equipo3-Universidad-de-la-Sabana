@@ -3,6 +3,8 @@
 **Fase:** Technology Architecture · TOGAF ADM · Corte 2  
 **Modelo:** [Mapa de infraestructura](mapa-final.drawio)
 
+**Vista complementaria:** [ArchiMate editable](vista-integrada-archimate.drawio) · [Vista previa SVG](vista-integrada-archimate.svg)
+
 ## 1. Propósito
 
 Este documento ubica los contenedores del modelo C4 sobre la infraestructura institucional. La solución se plantea como un servicio SaaS dentro del tenant Microsoft 365 de la Universidad. No requiere servidores propios, instalación local adicional, base de datos externa ni exposición de servicios a Internet.
@@ -17,6 +19,22 @@ El mapa diferencia claramente:
 - Controles y decisiones que todavía debe validar Tecnología.
 
 ## 2. Inventario de infraestructura
+
+### Vista integrada de aplicaciones y tecnología
+
+La [vista ArchiMate](vista-integrada-archimate.drawio) complementa C4 y el mapa de infraestructura, conservando sus IDs. Usa un subconjunto de **ArchiMate 3.2** y notación alternativa con el tipo de elemento explícito: Application Component, Application Service, Data Object, Technology Service, Device y System Software. Los servicios tecnológicos representan el soporte SaaS/local de la solución, no servidores dedicados ni componentes nuevos instalados. La agrupación del tenant indica contexto institucional, no una conexión de red ni un permiso implícito.
+
+Relaciones empleadas:
+
+- **Realization:** componente/proveedor hacia servicio realizado, discontinua con triángulo vacío. El soporte proveedor–servicio se resume como relación derivada, omitiendo funciones internas.
+- **Serving:** servicio tecnológico hacia componente al que ofrece soporte, continua con flecha abierta.
+- **Access:** discontinua; flecha hacia el lector para lectura, hacia el dato para escritura, ambas para lectura/escritura. Power Query lee; los flujos escriben solo cambios validados.
+
+Los componentes de gestión agrupan la biblioteca y las listas lógicas de C4. C08 (Teams/Outlook) y C09 (Entra ID) se declaran como dependencias transversales en la nota de la vista; sus configuraciones se detallan en el mapa existente. La vista no pretende modelar el PBX ni sustituir el [contrato de datos](../03-arquitectura-c4/esquema-datos-to-be.md). Fuente metodológica: [ArchiMate 101, comunidad de The Open Group](https://archimate-community.pages.opengroup.org/workgroups/archimate-101/).
+
+![Vista integrada ArchiMate](vista-integrada-archimate.svg)
+
+### Inventario detallado
 
 | ID | Componente | Tipo | Estado | Propietario | Función |
 |---|---|---|---|---|---|

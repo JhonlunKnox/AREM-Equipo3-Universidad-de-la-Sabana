@@ -21,5 +21,7 @@
 
 - The Open Group. *TOGAF Standard* — Technology Architecture.
 - C4 Model. *Deployment diagrams*. <https://c4model.com/diagrams/deployment>.
+- ArchiMate User Community, The Open Group. *ArchiMate 101: A Practical Introduction*, capas de aplicaciones/tecnología y notación alternativa. <https://archimate-community.pages.opengroup.org/workgroups/archimate-101/>. Consultado el 2 de octubre de 2026.
+- The Open Group. *ArchiMate Specification*, referencia del lenguaje usado en la vista integrada (subconjunto 3.2). <https://www.opengroup.org/archimate-forum/archimate-overview>.
 
 Las referencias técnicas se consultaron en septiembre de 2026. La configuración real del tenant debe prevalecer sobre cualquier capacidad descrita de forma general en la documentación pública.

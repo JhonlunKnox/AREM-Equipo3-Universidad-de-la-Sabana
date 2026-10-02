@@ -42,7 +42,11 @@ La matriz usa escalas de probabilidad e impacto de 1 a 5. El puntaje es el produ
 
 Los valores son una evaluación inicial del equipo y deben validarse con Tecnología y Seguridad Informática. No representan una medición institucional oficial.
 
+Las escalas cualitativas y el fundamento de cada puntuación se documentan en [criterios-priorizacion.md](criterios-priorizacion.md). La probabilidad no es una frecuencia medida. D-02 se ajustó de 4 a 3 y D-04 de 3 a 2 por falta de evidencia de recurrencia; no se alteró su impacto. La entrega a mes vencido es una limitación del insumo, distinta de la ausencia inesperada de un corte.
+
 ## 3. Resultado resumido
+
+La matriz contiene 19 escenarios: 17 inherentes Altos/Críticos, uno residual **proyectado** Alto (I-02) y ocho controles Por validar. La alta concentración depende de supuestos iniciales de exposición, especialmente P=4, que requieren comprobación en el tenant; no prueba que se hayan materializado incidentes.
 
 Los escenarios de mayor atención se concentran en cuatro áreas:
 
@@ -85,6 +89,17 @@ Los escenarios de mayor atención se concentran en cuatro áreas:
 - Separación entre el repositorio académico y los datos operativos.
 - Confirmación de las políticas DLP y retención del tenant.
 
+### 4.6. Publicación académica — I-03
+
+La regla de datos ficticios y el [`.gitignore`](../.gitignore) ya están presentes. El control se marca **Parcial**, porque las exclusiones por nombre no sustituyen la revisión humana recurrente ni eliminan archivos ya versionados. Antes de cada publicación, el equipo revisará:
+
+1. Archivos nuevos/modificados y nombres de archivo: no nómina ni directorio operativo real.
+2. Capturas, comentarios, propiedades y metadatos: sin datos operativos ni credenciales.
+3. Archivos ya versionados: `.gitignore` no deja de seguirlos; si se detecta exposición, detener publicación y gestionar el incidente y la retirada autorizada.
+4. Que las matrices académicas y datos sintéticos sigan accesibles y no se excluyan accidentalmente.
+
+Los créditos y contactos académicos del equipo no se confunden con datos operativos del cliente.
+
 ### 4.5. Disponibilidad
 
 - Alerta cuando un flujo falla.
@@ -95,7 +110,7 @@ Los escenarios de mayor atención se concentran en cuatro áreas:
 
 ## 5. Riesgo residual
 
-Los controles propuestos reducen el riesgo, pero no eliminan:
+Los puntajes residuales son **proyecciones condicionadas** a implantar y probar los controles. La reducción no se ha demostrado en una solución desplegada. Aun en ese escenario, permanecen:
 
 - El desfase de hasta 45 días de la fuente mensual.
 - La dependencia de la disponibilidad de Microsoft 365.
@@ -104,6 +119,8 @@ Los controles propuestos reducen el riesgo, pero no eliminan:
 - Los cambios de formato del archivo de nómina.
 
 Por esta razón, el proceso debe conservar revisión humana, monitoreo de excepciones y un mecanismo de corrección.
+
+**I-02 — Acceso al archivo mensual completo:** residual proyectado 2 × 5 = **10 (Alto)**. Responsable propuesto: TI SharePoint / Seguridad. Tratamiento: Mitigar, **sin aceptación del cliente**. Antes de usar datos reales deben comprobarse permisos efectivos, separación de biblioteca y enlaces/grupos; antes del piloto se debe reevaluar el riesgo y documentar la decisión del dueño del proceso y Seguridad. Si conserva nivel Alto, se requieren controles adicionales o aceptación expresa institucional. Ver el [registro de decisiones](criterios-priorizacion.md#3-riesgo-residual-proyectado-y-decisiones).
 
 ## 6. Validación requerida
 

@@ -25,7 +25,7 @@ Ese directorio se mantiene manualmente. Cada mes llega la nómina —con retraso
 
 Además de lo anterior, hay dos obstáculos concretos:
 
-**El archivo de nómina no permite hacer el cruce automáticamente.** Aunque contiene la misma información, la forma en que se descarga del sistema impide usar las funciones de búsqueda de Excel, y obliga a la revisión uno a uno.
+**El cruce actual no funciona de forma confiable.** La cliente reportó dificultades con las búsquedas de Excel. La causa exacta debe reproducirse con una muestra autorizada: no se presupone que conservar los identificadores como texto sea un error. La nómina contiene ID y correo; ambas fuentes necesitan llaves compatibles y validación de duplicados.
 
 **Tecnología no avisa cuando termina.** Cuando se pide una extensión nueva, el registro queda marcado como "pendiente por aprovisionar". Tecnología la asigna y llama al colaborador, pero no informa de vuelta a la unidad. La marca se queda ahí indefinidamente y las gestoras no saben si ya pueden transferir llamadas a esa persona.
 
@@ -43,32 +43,34 @@ Hoy esas fallas no se registran ni se miden, por lo que la unidad no tiene visib
 
 ## 3. Lo que proponemos
 
-### Que el cruce se haga solo
+### Que el cruce reduzca la revisión a excepciones
 
-En lugar de revisar 6.400 filas, la unidad recibirá cada mes un reporte corto con las novedades ya clasificadas:
+La responsable cargará el insumo mensual y ejecutará la actualización guiada del libro de Excel con Power Query. El cruce producirá un reporte de excepciones para revisión humana:
 
 - **Ingresó** una persona que por su cargo debería tener extensión
 - **Se retiró** una persona que tenía extensión asignada
 - **Cambió de cargo o de unidad** alguien ya registrado
-- **Quedó vacante** una extensión sin titular
+- **Posición posiblemente vacante**, cuando exista una llave de posición y una fuente suficiente para comprobarlo. Una ausencia en la nómina no prueba por sí sola una vacante ni autoriza liberar una extensión.
 
-Todo lo que no cambió, simplemente no aparece.
+Los registros sin cambios no aparecen como novedades. Los casos sin llave, ambiguos o con cambios inesperados se separan para revisión. Los 5 a 10 cambios mensuales son el volumen habitual declarado, no un límite del reporte.
 
 ### Que exista un canal de ida y vuelta con Tecnología
 
-Desde el mismo reporte, la unidad podrá enviar la solicitud a Tecnología sin necesidad de agendar una reunión. Y cuando Tecnología confirme que ya asignó la extensión, esa confirmación actualizará el directorio automáticamente y retirará la marca de "pendiente".
+Después de validar el reporte, la responsable registrará las novedades y solicitudes en Lists. Power Query no publicará directamente en las listas en el diseño base. Power Automate notificará a Tecnología y registrará su respuesta autenticada. La confirmación actualizará el estado administrativo únicamente si corresponde a la solicitud vigente y cumple las reglas de validación; los casos ambiguos conservarán revisión humana.
 
-Si una solicitud lleva demasiados días sin respuesta, el sistema lo recuerda por sí solo.
+Tecnología también podrá registrar una asignación o liberación que conozca antes de la siguiente nómina, para que la unidad la valide sin esperar al cierre mensual. El PBX continuará siendo operado por Tecnología, sin integración automática.
+
+Los recordatorios y el escalamiento serán automáticos una vez se acuerde el plazo de atención con Tecnología. Ese plazo aún no está confirmado.
 
 ### Que el directorio sea información institucional
 
-Hoy el directorio es un archivo alojado en el espacio personal de una colaboradora, sin historial de cambios y vulnerable a que un error de manipulación lo dañe —algo que ya ocurrió una vez y obligó a reconstruirlo.
+Hoy el directorio es un archivo alojado en OneDrive. La titularidad técnica, el historial disponible y los mecanismos de recuperación deben comprobarse. La cliente relató un daño accidental que obligó a reconstruirlo; esto no demuestra que OneDrive carezca de versionamiento.
 
 Proponemos moverlo a un espacio institucional donde tenga estructura definida, permisos claros, registro de quién cambió qué y cuándo, y consulta cómoda para las gestoras desde el computador o el celular.
 
 ### Sin salirse de lo que la Universidad ya tiene
 
-Toda la propuesta se construye sobre las herramientas que la Universidad ya licencia y que Seguridad Informática ya aprobó. No hay software externo, no hay nada que instalar, no hay que pasar por comité.
+La propuesta usa la suite Microsoft existente y conectores estándar, sin desarrollo a medida ni servidores propios. La cliente indicó que dispone de licenciamiento ordinario, pero no se han confirmado permisos para crear sitios/listas, licencias de los propietarios de los flujos, políticas DLP ni aprobación de Seguridad. Las revisiones o comités que exija la Universidad siguen aplicando.
 
 Esto responde directamente a lo que ocurrió en un semestre anterior, cuando un desarrollo entregado por otro equipo nunca pudo implementarse.
 
@@ -78,13 +80,13 @@ Esto responde directamente a lo que ocurrió en un semestre anterior, cuando un 
 
 | Situación actual | Situación propuesta |
 |---|---|
-| Revisión manual de 6.400 registros | Reporte automático con 5 a 10 novedades |
+| Revisión manual de 6.400 registros | Cruce guiado y revisión de excepciones; volumen habitual estimado de 5 a 10 cambios |
 | Reunión de 2 a 3 horas con Tecnología | Validación breve del reporte |
 | Solicitudes verbales sin registro | Solicitudes estructuradas y trazables |
-| Sin confirmación de Tecnología | Confirmación que actualiza el directorio sola |
+| Sin confirmación de Tecnología | Respuesta autenticada y actualización controlada del estado |
 | Marca "pendiente" indefinida | Vencimiento y recordatorio automático |
 | Actualización cada 2 o 3 meses | Actualización mensual sostenida |
-| Archivo personal sin historial | Fuente institucional con trazabilidad |
+| Archivo en OneDrive con continuidad por confirmar | Fuente institucional con esquema, roles e historial verificado |
 
 ---
 
@@ -103,13 +105,13 @@ La recomendación de fondo —que Desarrollo Humano reporte las novedades direct
 ## 6. Cómo se implementa
 
 ### Fase 1 — Preparar la información
-Corregir el formato del archivo de nómina para que permita el cruce automático, y agregar al directorio el identificador de empleado que hoy solo existe en la nómina. Este identificador es lo que permite emparejar ambas fuentes de forma confiable, incluso cuando hay varias personas con el mismo cargo en la misma unidad.
+Verificar el esquema y hacer compatibles las llaves de ambas fuentes, conservando los identificadores como texto, y completar el directorio con el ID que la cliente confirmó en la nómina. Confirmar qué registros del directorio ya cuentan con ese ID. El emparejamiento inicial por correo exige unicidad y revisión de ambiguos, no se basa únicamente en unidad y cargo.
 
 ### Fase 2 — Trasladar el directorio
 Migrar el directorio a un espacio institucional con estructura definida y permisos por rol. Las gestoras mantienen la consulta; la edición queda controlada y registrada.
 
 ### Fase 3 — Automatizar el cruce
-Configurar el proceso que compara nómina y directorio y produce el reporte mensual de novedades.
+Configurar el libro de conciliación con actualización guiada, validación de entrada y reporte de excepciones. La publicación en Lists será controlada por la responsable; la automatización completa queda condicionada a pruebas y licencias.
 
 ### Fase 4 — Conectar con Tecnología
 Habilitar el canal de solicitud y el de confirmación de retorno, junto con el recordatorio automático para las solicitudes que se queden sin respuesta.
@@ -122,10 +124,12 @@ Documento de configuración paso a paso, acompañamiento en la puesta en marcha 
 ## 7. Qué necesitamos del cliente
 
 - Confirmación de los permisos disponibles en las herramientas de Microsoft 365.
-- Una muestra del archivo de nómina para verificar y corregir el problema de formato.
+- Una muestra ficticia o anonimizada autorizada, o revisión en el entorno del cliente, para reproducir el problema del cruce. La nómina con datos reales no se publica en GitHub.
 - Aclaración de la correspondencia entre las categorías de unidad que maneja la nómina y las que maneja el directorio.
 - El criterio documentado de qué cargos tienen derecho a extensión telefónica.
-- Validación de este resumen antes de avanzar al diseño detallado.
+- Validación de este resumen y del diseño objetivo preliminar ya elaborado para Corte 2, antes del piloto o implantación.
+- Confirmación de la llave de posición, el criterio de vacancia y los estados/plazos de respuesta de Tecnología.
+- Revisión de roles, clasificación de datos, base jurídica y retención con los responsables institucionales.
 
 ---
 
@@ -137,4 +141,4 @@ No buscamos entregar el sistema más sofisticado posible, sino el que la unidad 
 
 ---
 
-*Documento en elaboración. Las cifras corresponden a lo declarado por el cliente durante el levantamiento de información. Última actualización: agosto de 2026.*
+*Diseño propuesto para Corte 2, pendiente de validación e implantación institucional. Las cifras corresponden a lo declarado por el cliente durante el levantamiento de información. Última actualización: 2 de octubre de 2026.*

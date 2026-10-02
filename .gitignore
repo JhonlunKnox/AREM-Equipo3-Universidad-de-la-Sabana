@@ -1,0 +1,17 @@
+# Datos operativos del cliente: solo se almacenan en el entorno institucional autorizado.
+/datos-reales/
+/datos-cliente/
+/evidencias-privadas/
+**/*[Nn]omina*.xls*
+**/*[Nn]ómina*.xls*
+**/*[Nn]omina*.csv
+**/*[Nn]ómina*.csv
+# No excluir todas las hojas Excel: las matrices académicas sí son entregables.
+~$*
+*.tmp
+*.xlsx.inspect.ndjson
+.DS_Store
+Thumbs.db
+node_modules/
+/tmp/
+/outputs/

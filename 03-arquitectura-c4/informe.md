@@ -3,6 +3,8 @@
 **Fase:** Information Systems Architecture — Aplicaciones · TOGAF ADM · Corte 2  
 **Modelos:** [C1 — Contexto](c1-contexto-final.drawio) · [C2 — Contenedores](c2-contenedores-final.drawio)
 
+**Complementos:** [Esquema de datos TO-BE](esquema-datos-to-be.md) · [Vista integrada ArchiMate](../04-infraestructura/vista-integrada-archimate.drawio)
+
 ## 1. Decisión arquitectónica
 
 La arquitectura objetivo no introduce una aplicación desarrollada a medida. Organiza el proceso sobre servicios de Microsoft 365 ya disponibles para la Universidad y separa cuatro responsabilidades que hoy están mezcladas en un único archivo:
@@ -41,7 +43,7 @@ Quedan fuera del alcance:
 | Aplicación o artefacto | Propietario | Función actual | Interacción | Limitación principal |
 |---|---|---|---|---|
 | Sistema de Desarrollo Humano | Desarrollo Humano | Origina la nómina institucional | Exportación mensual a Excel | La solución no controla su formato ni su latencia |
-| Archivo de nómina | Desarrollo Humano / Experiencia y Servicio | Insumo para identificar novedades | Descarga manual | Tipos inconsistentes y entrega mes vencido |
+| Archivo de nómina | Desarrollo Humano / Experiencia y Servicio | Insumo para identificar novedades | Descarga manual | Cruce reportado como fallido, causa técnica por verificar; entrega mes vencido |
 | Directorio de extensiones en Excel | Experiencia y Servicio | Fuente consultada por las gestoras | Edición manual; lectura desde OneDrive | Sin esquema tipado, llave estable ni flujo de estados |
 | OneDrive | Titularidad técnica por confirmar | Almacena y comparte el directorio | Enlace de solo lectura | El activo permanece ligado a un espacio de trabajo cuya continuidad debe validarse |
 | Microsoft Teams | Experiencia y Servicio / Tecnología | Coordina reuniones y solicitudes | Mensajes y reuniones | La solicitud no queda como registro estructurado |
@@ -91,8 +93,8 @@ Quedan fuera del alcance:
 3. La responsable actualiza el libro de Power Query.
 4. Power Query conserva `Id Empleado` como texto, limpia espacios, normaliza correo y aplica el catálogo de unidades.
 5. La consulta compara la nómina preparada contra el directorio por `Id Empleado`. Durante la transición inicial usa correo institucional y exige revisión de coincidencias ambiguas.
-6. El resultado se limita a excepciones clasificadas: ingreso, retiro, cambio de cargo, cambio de unidad, falta de llave o diferencia no clasificable.
-7. Las excepciones aprobadas se registran como novedades. Las que requieren actuación técnica crean una solicitud.
+6. El resultado se limita a excepciones: ingreso, retiro por confirmar, cambio de cargo, cambio de unidad, vacancia por confirmar, falta de llave o diferencia no clasificable. Una posición vacante no equivale a una extensión liberada; sin llave de posición y evidencia suficiente no se confirma vacancia ni se ordena liberación.
+7. La responsable registra las excepciones en Lists mediante publicación controlada, con decisión y responsable. Power Query no escribe directamente en las listas en el diseño base. Las aprobadas que requieren actuación técnica crean una solicitud; las ambiguas conservan el estado de revisión.
 8. La actualización del directorio ocurre después de la validación humana correspondiente, no por una escritura automática sin control.
 
 ### 4.4. Flujo de aprovisionamiento
@@ -101,10 +103,12 @@ Quedan fuera del alcance:
 2. Power Automate la asigna al grupo de aprovisionamiento y envía una notificación por Teams/Outlook.
 3. Tecnología responde `Aprovisionada`, `Liberada`, `Requiere información` o `Rechazada`, con observación obligatoria cuando aplique.
 4. El flujo registra usuario y fecha de respuesta.
-5. Una respuesta exitosa actualiza el estado administrativo del registro del directorio.
+5. Una respuesta exitosa actualiza el estado administrativo solo si la solicitud sigue vigente, la identidad está autorizada y titular/extensión son coherentes. Una respuesta tardía, duplicada o contradictoria no sobreescribe una asignación posterior; queda para revisión. Se distingue respuesta técnica de aplicación efectiva del cambio.
 6. Las solicitudes sin respuesta dentro del plazo acordado se marcan `Vencida` y se escalan. El plazo no se fija en este documento porque debe acordarse con Tecnología.
 
 Este flujo implementa la comunicación bidireccional solicitada por la cliente: Experiencia y Servicio reporta la novedad y Tecnología devuelve el resultado del aprovisionamiento o liberación sin depender de una reunión.
+
+Tecnología también puede iniciar un aviso de asignación/liberación antes del corte mensual. Se registra con origen Tecnología y la unidad valida su incorporación al directorio. No se presume que el PBX envíe ese aviso automáticamente.
 
 ### 4.5. Estados propuestos
 
@@ -117,6 +121,10 @@ Creada -> Enviada a Tecnología -> En gestión -> Aprovisionada/Liberada
 ```
 
 Ninguna solicitud puede permanecer en un estado “pendiente” sin responsable, fecha de última actuación y siguiente acción definida.
+
+### 4.6. Contrato de datos
+
+El [esquema TO-BE](esquema-datos-to-be.md) detalla columnas tipadas, campos obligatorios, claves y relaciones de C01 y C03–C06. Diferencia empleado, posición y extensión; propone llaves estables para reintentos y reglas de transición. Las relaciones Lookup y las vistas de SharePoint no sustituyen todas las restricciones de una base relacional ni la seguridad por campo: se requieren validaciones y pruebas de acceso. El contrato es preliminar hasta confirmar el archivo real y los catálogos del cliente.
 
 ## 5. Matriz aplicaciones versus procesos
 
@@ -179,4 +187,4 @@ Hasta completar estas validaciones, el modelo es una **arquitectura objetivo pro
 
 ## 10. Conclusión
 
-La arquitectura separa datos, transformación y coordinación. El cambio principal no es tecnológico: convierte un archivo personal y una conversación informal en un proceso institucional con fuente única, excepciones revisables y estados trazables. El diseño conserva la intervención humana donde existe incertidumbre y automatiza únicamente los pasos repetibles y verificables.
+La arquitectura separa datos, transformación y coordinación. El cambio principal no es tecnológico: convierte un archivo en OneDrive y una conversación informal en un proceso institucional con fuente única, excepciones revisables y estados trazables. La titularidad y recuperación del espacio actual aún deben comprobarse. El diseño conserva la intervención humana donde existe incertidumbre y automatiza únicamente los pasos repetibles y verificables.

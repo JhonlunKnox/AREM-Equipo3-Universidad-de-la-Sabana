@@ -103,6 +103,10 @@ La cliente autorizó mencionar a la Universidad y al área en el documento acad�
 
 El checklist marca la mayoría de los criterios como `Pendiente` o `Parcial` porque la documentación interna y la configuración del tenant no se encuentran en el repositorio. Esto es deliberado: la ausencia de evidencia no se presenta como cumplimiento.
 
+Contiene 18 criterios: uno Cumple (REPO-01, limitado a los archivos de esta entrega), siete Parcial y diez Pendiente/Por validar. REPO-01 se sustenta en la regla del README, el .gitignore y la revisión del árbol de archivos al 2 de octubre de 2026; no certifica todo el historial ni cumplimiento institucional. El control recurrente de publicación I-03 permanece Parcial en STRIDE. La revisión excluye datos operativos del cliente, no los créditos académicos del equipo.
+
+La columna **Hito objetivo propuesto** completa los 18 criterios con momentos de revisión (antes del piloto, antes de datos reales, en cada publicación o al cierre). Son propuestas que cada responsable debe confirmar, no fechas o SLA acordados. Las aprobaciones siguen pendientes. El [esquema de datos TO-BE](../03-arquitectura-c4/esquema-datos-to-be.md) aporta el diccionario inicial para DAT-01, pero no reemplaza la aprobación de campos ni la prueba de permisos.
+
 La arquitectura incorpora controles compatibles con los principios de la Ley 1581, pero solo podrá declararse conforme después de que la Universidad confirme la base jurídica, la política, los roles, la retención, la configuración y las evidencias.
 
 ## 9. Conclusión

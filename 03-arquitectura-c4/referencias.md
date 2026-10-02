@@ -5,6 +5,8 @@
 - [Architecture Vision](../00-preliminary-vision/vision.md).
 - [Informe BPMN](../01-bpmn/informe.md).
 - [Informe del modelo de información](../02-modelo-informacion/informe.md).
+- [Esquema de datos TO-BE](esquema-datos-to-be.md): contrato preliminar y relaciones propuestas; no evidencia de listas implantadas.
+- [Vista integrada ArchiMate](../04-infraestructura/vista-integrada-archimate.drawio).
 - Sesiones de levantamiento y cuestionario de seguimiento documentados en [`00-preliminary-vision/referencias.md`](../00-preliminary-vision/referencias.md).
 - Sesión de levantamiento con Johanna Molina, agosto de 2026: confirmó publicación de la nómina mes vencido aproximadamente el día 15, revisión manual, ambigüedad por cargos repetidos, regla de extensión administrada por Desarrollo Humano, ausencia de notificación bidireccional y restricción de trabajar dentro de la suite Microsoft.
 - Cuestionario de seguimiento vía Microsoft Teams con Johanna Molina, 20 de agosto de 2026: confirmó `Id Empleado` y correo en nómina, directorio en OneDrive, ≈ 6.400 filas, 5–10 cambios mensuales, canal actual por Teams/reunión con José Roberto, nómina mes vencido como único insumo de movimientos de personal y autorización para nombrar a la Universidad y al área. La capacidad para crear Microsoft Lists y el licenciamiento específico de Power Automate quedaron sin confirmar.
