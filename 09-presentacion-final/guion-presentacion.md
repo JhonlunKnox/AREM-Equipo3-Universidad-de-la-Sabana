@@ -22,7 +22,7 @@ Los nombres de presentador deben acordarse en el ensayo. Todos deben poder respo
 
 ## Diapositiva 1 Apertura - 25 segundos
 
-> Buenos dias. Somos el equipo Adictos al Azucar. Trabajamos con la Jefatura de Cultura de Innovacion y Servicio de la Universidad de La Sabana. La propuesta convierte el directorio de extensiones, hoy mantenido manualmente, en una fuente institucional con conciliacion por excepciones y un ciclo trazable con Tecnologia. Mostraremos el problema, la causa, la solucion y como implementarla sin prometer controles que aun no estan aprobados.
+> Buenos dias. Somos el Equipo 3 del curso. Trabajamos con la Jefatura de Cultura de Innovacion y Servicio de la Universidad de La Sabana. La propuesta convierte el directorio de extensiones, hoy mantenido manualmente, en una fuente institucional con conciliacion por excepciones y un ciclo trazable con Tecnologia. Mostraremos el problema, la causa, la solucion y como implementarla sin prometer controles que aun no estan aprobados.
 
 **Transicion:** Empezamos por el efecto que ve quien llama.
 
@@ -55,7 +55,7 @@ Los nombres de presentador deben acordarse en el ensayo. Todos deben poder respo
 
 > La arquitectura objetivo tiene cuatro paquetes. WP0 habilita el piloto: permisos, licencias, DLP, base juridica, retencion y responsables. WP1 crea el directorio gobernado en SharePoint o Lists, con catalogos, grupos e historial. WP2 ejecuta la conciliacion con Power Automate y produce excepciones. Los casos ambiguos conservan validacion humana. WP3 crea solicitudes trazables hacia Tecnologia, con estado, respuesta autenticada, vencimiento y escalamiento.
 >
-> Todo permanece dentro de Microsoft 365 con conectores estandar. El PBX no se integra y sigue bajo Tecnologia. La nomina se separa del directorio y las notificaciones llevan un ID y un enlace protegido, no el archivo completo.
+> Todo permanece dentro de Microsoft 365 con conectores estandar, y eso ya lo comprobamos con la cliente. El PBX no se integra y sigue bajo Tecnologia. La nomina se separa del directorio y las notificaciones llevan un ID y un enlace protegido, no el archivo completo.
 
 **Enfatizar:** WP1 es prerequisito de WP2 y WP3.  
 **Transicion:** Dos decisiones explican por que elegimos esta realizacion y no otra.
@@ -90,7 +90,7 @@ Los nombres de presentador deben acordarse en el ensayo. Todos deben poder respo
 
 ## Diapositiva 9 Cierre - 45 segundos
 
-> Recomendamos autorizar un piloto limitado con datos ficticios, no una implantacion directa. Antes de datos reales se deben confirmar permisos, licencias, DLP, base juridica, retencion, grupo de Tecnologia y propietarios de los flujos.
+> Recomendamos autorizar un piloto limitado con datos ficticios, no una implantacion directa. Parte de la fase cero ya avanzo: la cliente comprobo en su cuenta que Power Automate tiene los conectores de SharePoint, Excel Online, Outlook y Teams sin licencia premium, y que puede crear sitios de SharePoint. Antes de datos reales faltan DLP, base juridica, retencion, grupo de Tecnologia y propietarios de los flujos.
 >
 > La propuesta reduce la revision a excepciones, cierra el estado pendiente y deja reglas para cambiar la arquitectura despues. Su limite principal sigue siendo la nomina mes vencido. La decision responsable es comprobar primero que la Universidad puede gobernar y sostener la solucion. Con eso cerramos y quedamos atentos a sus preguntas.
 
