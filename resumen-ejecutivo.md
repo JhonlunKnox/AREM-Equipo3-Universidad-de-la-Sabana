@@ -1,144 +1,102 @@
-# Resumen Ejecutivo
+# Resumen ejecutivo del proyecto
 
-**Cliente:** Jefatura de Cultura de Innovación y Servicio — Universidad de La Sabana
-**Proyecto:** Actualización del Directorio de Extensiones Telefónicas
-**Documento dirigido a:** el negocio. No requiere conocimientos técnicos para leerse.
+**Cliente:** Jefatura de Cultura de Innovacion y Servicio - Universidad de La Sabana  
+**Proyecto:** Actualizacion del directorio de extensiones telefonicas  
+**Recomendacion:** implantar la arquitectura por fases, comenzando por las condiciones de gobierno y seguridad que permiten un piloto controlado.
 
----
+## Decision solicitada
 
-## 1. La situación hoy
+Autorizar un piloto con datos ficticios y un alcance reducido para validar la arquitectura dentro del tenant Microsoft 365. El paso a datos reales queda condicionado a la aprobacion institucional de permisos, licencias, proteccion de datos, retencion y responsables operativos.
 
-Cuando alguien llama a la Universidad, una gestora de servicio contesta, entiende qué necesita esa persona y la transfiere al área correspondiente. Para saber a dónde transferir, consulta un directorio de extensiones telefónicas.
+## Situacion actual
 
-Ese directorio se mantiene manualmente. Cada mes llega la nómina —con retraso de un mes— y hay que compararla, registro por registro, contra el directorio para detectar quién entró a la Universidad, quién salió y quién cambió de cargo. Después hay que coordinar con la Dirección de Tecnología para pedir que asignen o liberen las extensiones correspondientes.
+Las cuatro gestoras que atienden llamadas consultan un directorio de extensiones para transferir al usuario al area correcta. La informacion se mantiene en un archivo de Excel alojado en OneDrive. Cada ciclo exige comparar manualmente cerca de 6.400 registros contra la nomina para detectar entre 5 y 10 novedades. El ciclo deberia ser mensual, pero en la practica ocurre cada dos o tres meses.
 
-**El esfuerzo es desproporcionado frente al resultado:**
+Cuando la unidad solicita una extension, Tecnologia la aprovisiona y contacta al colaborador. No existe un retorno estructurado hacia la unidad. El registro puede quedar indefinidamente como pendiente aunque la extension ya funcione. La unidad tampoco mide las transferencias fallidas, de modo que el impacto sobre estudiantes, aspirantes y visitantes no tiene una linea base.
 
-| | |
-|---|---|
-| Registros que hay que revisar cada ciclo | ~6.400 |
-| Novedades reales que aparecen al mes | 5 a 10 |
-| Proporción | Cerca de **800 registros revisados por cada novedad encontrada** |
-| Duración de la revisión conjunta con Tecnología | 2 a 3 horas |
-| Frecuencia con que debería actualizarse | Mensual |
-| Frecuencia con que se logra en la práctica | Cada 2 o 3 meses |
+## Causas arquitectonicas
 
-Además de lo anterior, hay dos obstáculos concretos:
+| Causa | Evidencia del proyecto | Efecto |
+|---|---|---|
+| No existe una llave estable comun entre la nomina y el directorio | El Id Empleado solo aparece en la nomina; correo es la llave transitoria | Cruces ambiguos y riesgo de asignar una extension a la persona equivocada |
+| El directorio mezcla dato, interfaz, estados y auditoria en un archivo | C4 AS-IS y modelo de informacion | Edicion fragil, trazabilidad limitada y dependencia del espacio actual |
+| Las taxonomias de unidad y cargo no tienen correspondencia aprobada | Modelo de informacion Q3 y Q7 | Falsos positivos en el cruce |
+| La coordinacion con Tecnologia ocurre por mensajes o reunion | BPMN B2 y B3 | Solicitudes sin estado completo y ausencia de confirmacion de retorno |
+| Los controles del tenant no estan verificados | Infraestructura, STRIDE y normatividad | El diseño no puede declararse desplegable ni conforme todavia |
 
-**El cruce actual no funciona de forma confiable.** La cliente reportó dificultades con las búsquedas de Excel. La causa exacta debe reproducirse con una muestra autorizada: no se presupone que conservar los identificadores como texto sea un error. La nómina contiene ID y correo; ambas fuentes necesitan llaves compatibles y validación de duplicados.
+## Arquitectura recomendada
 
-**Tecnología no avisa cuando termina.** Cuando se pide una extensión nueva, el registro queda marcado como "pendiente por aprovisionar". Tecnología la asigna y llama al colaborador, pero no informa de vuelta a la unidad. La marca se queda ahí indefinidamente y las gestoras no saben si ya pueden transferir llamadas a esa persona.
+La solucion usa servicios corporativos de Microsoft 365 y conectores estandar. No introduce servidores propios, software externo ni una integracion directa con el PBX.
 
----
+1. **Directorio gobernado.** Microsoft Lists o una lista de SharePoint se convierte en la fuente unica. El acceso se separa por roles y se habilita historial de versiones.
+2. **Conciliacion por excepciones.** Un flujo de Power Automate valida la estructura, cruza por una llave estable y produce solo novedades. Los casos ambiguos requieren decision humana.
+3. **Aprovisionamiento trazable.** Cada solicitud conserva identificador, responsable, fechas, estado, respuesta autenticada y regla de escalamiento.
+4. **Gobierno y seguridad.** Los cambios respetan principios, estandares, ADR, minimo privilegio, minimizacion de datos y evidencia de aprobacion.
 
-## 2. Por qué importa
+## Beneficios esperados
 
-El costo no lo asume la unidad: lo asume quien llama.
+| Situacion actual | Estado objetivo | Como se comprobara |
+|---|---|---|
+| Revision de aproximadamente 6.400 registros | Revision de excepciones | Conteo de registros fuente frente a novedades generadas |
+| Ciclo bimensual o trimestral | Ciclo mensual sostenido | Historial de ejecuciones durante tres meses consecutivos |
+| Solicitud verbal o por mensaje | Solicitud estructurada | Registro con ID, estado, responsable y fechas |
+| Pendiente sin salida | Confirmacion o escalamiento | Cero solicitudes vencidas sin responsable ni siguiente accion |
+| Excel como fuente operativa | Lista institucional gobernada | Prueba de acceso por rol, versionamiento y restauracion |
+| Fallas de transferencia sin medicion | Registro basico de fallas | Linea base y seguimiento mensual |
 
-Cuando el directorio está desactualizado, la llamada se transfiere a un área que no corresponde, o a una extensión donde ya no trabaja nadie y simplemente nadie contesta. Un estudiante, un aspirante o un visitante externo tiene la experiencia de que la Universidad no supo atenderlo.
+Los beneficios son objetivos de validacion, no resultados ya medidos. Las cifras de tiempo y volumen provienen del levantamiento con el cliente.
 
-Hoy esas fallas no se registran ni se miden, por lo que la unidad no tiene visibilidad de cuántas veces ocurren.
+## Roadmap
 
----
+| Fase | Horizonte | Resultado visible |
+|---|---|---|
+| Habilitacion y control | 0 a 4 semanas | Acta de viabilidad, roles, riesgos y criterios de paso al piloto |
+| Directorio gobernado | Meses 1 y 2 | Las gestoras consultan un directorio institucional con acceso de solo lectura |
+| Conciliacion por excepciones | Meses 2 a 4 | Un ciclo ficticio identifica novedades sin revisar toda la fuente |
+| Aprovisionamiento trazable y transferencia | Meses 4 a 6 | Una solicitud de prueba recorre creacion, respuesta, cierre y escalamiento |
 
-## 3. Lo que proponemos
+Cada fase tiene una puerta de salida. La siguiente no comienza si la anterior no demuestra los controles asociados.
 
-### Que el cruce reduzca la revisión a excepciones
+## Riesgos principales
 
-La responsable cargará el insumo mensual y ejecutará la actualización guiada del libro de Excel con Power Query. El cruce producirá un reporte de excepciones para revisión humana:
+Los riesgos mas altos son la exposicion de la nomina por permisos excesivos, la asociacion equivocada entre persona y extension, la falta de base juridica o retencion aprobada, una actualizacion incorrecta por respuesta tardia o duplicada y la dependencia de permisos o conectores no verificados. La matriz completa cubre Negocio, Procesos, Datos, Aplicaciones, Infraestructura, Seguridad y Gobierno TI.
 
-- **Ingresó** una persona que por su cargo debería tener extensión
-- **Se retiró** una persona que tenía extensión asignada
-- **Cambió de cargo o de unidad** alguien ya registrado
-- **Posición posiblemente vacante**, cuando exista una llave de posición y una fuente suficiente para comprobarlo. Una ausencia en la nómina no prueba por sí sola una vacante ni autoriza liberar una extensión.
+El desfase de hasta 45 dias de la nomina se acepta como una limitacion externa. La confirmacion directa de Tecnologia compensa parcialmente los ingresos y movimientos que requieren extension, pero no elimina el retraso de la fuente de Desarrollo Humano.
 
-Los registros sin cambios no aparecen como novedades. Los casos sin llave, ambiguos o con cambios inesperados se separan para revisión. Los 5 a 10 cambios mensuales son el volumen habitual declarado, no un límite del reporte.
+## Gobierno
 
-### Que exista un canal de ida y vuelta con Tecnología
+Un comite ligero con el dueño del proceso, el arquitecto responsable, Tecnologia y Seguridad o Proteccion de Datos revisa el avance cada dos semanas durante el piloto y mensualmente durante la operacion. Cierra una fase solo cuando existe evidencia de conformidad con el TO-BE y con los controles. Toda excepcion requiere una ADR antes de pasar a produccion.
 
-Después de validar el reporte, la responsable registrará las novedades y solicitudes en Lists. Power Query no publicará directamente en las listas en el diseño base. Power Automate notificará a Tecnología y registrará su respuesta autenticada. La confirmación actualizará el estado administrativo únicamente si corresponde a la solicitud vigente y cumple las reglas de validación; los casos ambiguos conservarán revisión humana.
+Las tres metricas iniciales son:
 
-Tecnología también podrá registrar una asignación o liberación que conozca antes de la siguiente nómina, para que la unidad la valide sin esperar al cierre mensual. El PBX continuará siendo operado por Tecnología, sin integración automática.
+1. Porcentaje de ciclos mensuales ejecutados y cerrados.
+2. Porcentaje de cambios sensibles con validacion y trazabilidad completa.
+3. Tiempo de dictamen del comite sobre ADR o excepciones.
 
-Los recordatorios y el escalamiento serán automáticos una vez se acuerde el plazo de atención con Tecnología. Ese plazo aún no está confirmado.
+## Proximos pasos
 
-### Que el directorio sea información institucional
+1. Confirmar el patrocinador y los representantes institucionales que pueden aprobar el piloto.
+2. Validar licencias, permisos, DLP, base juridica, retencion y propietarios de los flujos.
+3. Acordar con Tecnologia el grupo de respuesta y el plazo objetivo.
+4. Preparar datos ficticios que representen duplicados, cambios de estructura, respuestas tardias y reintentos.
+5. Ejecutar la fase de habilitacion antes de cargar datos reales.
 
-Hoy el directorio es un archivo alojado en OneDrive. La titularidad técnica, el historial disponible y los mecanismos de recuperación deben comprobarse. La cliente relató un daño accidental que obligó a reconstruirlo; esto no demuestra que OneDrive carezca de versionamiento.
+## Limite de la recomendacion
 
-Proponemos moverlo a un espacio institucional donde tenga estructura definida, permisos claros, registro de quién cambió qué y cuándo, y consulta cómoda para las gestoras desde el computador o el celular.
+La arquitectura es una propuesta academica trazada a los Talleres 0 a 8. No sustituye el concepto juridico, la evaluacion de Seguridad Informatica ni la aprobacion del administrador de Microsoft 365. El repositorio no contiene datos operativos del cliente.
 
-### Sin salirse de lo que la Universidad ya tiene
 
-La propuesta usa la suite Microsoft existente y conectores estándar, sin desarrollo a medida ni servidores propios. La cliente indicó que dispone de licenciamiento ordinario, pero no se han confirmado permisos para crear sitios/listas, licencias de los propietarios de los flujos, políticas DLP ni aprobación de Seguridad. Las revisiones o comités que exija la Universidad siguen aplicando.
+## Vistas arquitectonicas finales
 
-Esto responde directamente a lo que ocurrió en un semestre anterior, cuando un desarrollo entregado por otro equipo nunca pudo implementarse.
+La [Vista de Motivacion](09-presentacion-final/vistas-finales/archimate-motivacion.drawio) relaciona drivers, objetivos, principios y requisitos con los paquetes de trabajo. La [Vista de Implementacion y Migracion](09-presentacion-final/vistas-finales/archimate-migracion.drawio) conecta los cuatro paquetes WP0 a WP3 con las brechas priorizadas y los estados AS-IS, piloto y TO-BE. Las fuentes editables y sus exportaciones PNG se incluyen en `vistas-finales/`.
 
----
+## Hallazgos clave
 
-## 4. Beneficios esperados
+- **Negocio:** el problema no es unicamente Excel; falta vigencia, conciliacion confiable y confirmacion del aprovisionamiento.
+- **Datos y aplicaciones:** la arquitectura objetivo seleccionada en el Taller 7 es Power Automate con SharePoint para la conciliacion por excepciones; Power Query queda como prototipo o contingencia controlada y no como arquitectura objetivo concurrente (ADR-002).
+- **Seguridad y cumplimiento:** permisos, base juridica, DLP, retencion y licencias siguen pendientes de comprobacion institucional; el riesgo residual es proyectado, no medido en produccion.
+- **Implementacion:** WP0 valida la viabilidad antes de cargar datos reales, seguido del directorio gobernado, la conciliacion y el cierre trazable con Tecnologia.
 
-| Situación actual | Situación propuesta |
-|---|---|
-| Revisión manual de 6.400 registros | Cruce guiado y revisión de excepciones; volumen habitual estimado de 5 a 10 cambios |
-| Reunión de 2 a 3 horas con Tecnología | Validación breve del reporte |
-| Solicitudes verbales sin registro | Solicitudes estructuradas y trazables |
-| Sin confirmación de Tecnología | Respuesta autenticada y actualización controlada del estado |
-| Marca "pendiente" indefinida | Vencimiento y recordatorio automático |
-| Actualización cada 2 o 3 meses | Actualización mensual sostenida |
-| Archivo en OneDrive con continuidad por confirmar | Fuente institucional con esquema, roles e historial verificado |
+## Reflexion final
 
----
-
-## 5. Lo que esta solución no resuelve
-
-Conviene ser explícitos.
-
-La nómina llega con un mes de retraso y es el único insumo disponible. Eso significa que siempre habrá un desfase de hasta 45 días entre el momento en que alguien cambia de cargo y el momento en que la unidad se entera. Ninguna automatización puede eliminar ese retraso: la información simplemente no existe antes.
-
-Lo que sí se compensa parcialmente es el caso de los ingresos nuevos, porque el canal con Tecnología captura esa novedad en el momento en que ocurre, sin esperar a la nómina.
-
-La recomendación de fondo —que Desarrollo Humano reporte las novedades directamente a la unidad— es un cambio de coordinación entre áreas, no un cambio técnico, y queda planteado como oportunidad de mejora.
-
----
-
-## 6. Cómo se implementa
-
-### Fase 1 — Preparar la información
-Verificar el esquema y hacer compatibles las llaves de ambas fuentes, conservando los identificadores como texto, y completar el directorio con el ID que la cliente confirmó en la nómina. Confirmar qué registros del directorio ya cuentan con ese ID. El emparejamiento inicial por correo exige unicidad y revisión de ambiguos, no se basa únicamente en unidad y cargo.
-
-### Fase 2 — Trasladar el directorio
-Migrar el directorio a un espacio institucional con estructura definida y permisos por rol. Las gestoras mantienen la consulta; la edición queda controlada y registrada.
-
-### Fase 3 — Automatizar el cruce
-Configurar el libro de conciliación con actualización guiada, validación de entrada y reporte de excepciones. La publicación en Lists será controlada por la responsable; la automatización completa queda condicionada a pruebas y licencias.
-
-### Fase 4 — Conectar con Tecnología
-Habilitar el canal de solicitud y el de confirmación de retorno, junto con el recordatorio automático para las solicitudes que se queden sin respuesta.
-
-### Fase 5 — Entregar y acompañar
-Documento de configuración paso a paso, acompañamiento en la puesta en marcha y verificación de que la unidad puede operar y mantener la solución por su cuenta.
-
----
-
-## 7. Qué necesitamos del cliente
-
-- Confirmación de los permisos disponibles en las herramientas de Microsoft 365.
-- Una muestra ficticia o anonimizada autorizada, o revisión en el entorno del cliente, para reproducir el problema del cruce. La nómina con datos reales no se publica en GitHub.
-- Aclaración de la correspondencia entre las categorías de unidad que maneja la nómina y las que maneja el directorio.
-- El criterio documentado de qué cargos tienen derecho a extensión telefónica.
-- Validación de este resumen y del diseño objetivo preliminar ya elaborado para Corte 2, antes del piloto o implantación.
-- Confirmación de la llave de posición, el criterio de vacancia y los estados/plazos de respuesta de Tecnología.
-- Revisión de roles, clasificación de datos, base jurídica y retención con los responsables institucionales.
-
----
-
-## 8. Criterio de éxito
-
-El proyecto será exitoso si, tres meses después de terminado, la unidad sigue usando la solución sin necesidad de nuestra intervención.
-
-No buscamos entregar el sistema más sofisticado posible, sino el que la unidad pueda operar y mantener por sí misma dentro de las herramientas que ya tiene.
-
----
-
-*Diseño propuesto para Corte 2, pendiente de validación e implantación institucional. Las cifras corresponden a lo declarado por el cliente durante el levantamiento de información. Última actualización: 2 de octubre de 2026.*
+La propuesta prioriza la capacidad de operar y gobernar una solucion realista antes que automatizar sin controles. Las vistas y los planes constituyen un diseño academico: la aprobacion de la Universidad, la evaluacion firmada del cliente y las reflexiones individuales no se presumen completadas.
