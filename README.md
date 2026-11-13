@@ -22,7 +22,7 @@ El resultado es que el directorio se actualiza cada dos o tres meses en lugar de
 
 ## Lo que proponemos
 
-- Que Power Query compare la nómina y el directorio después de una actualización guiada por la responsable, para revisar excepciones clasificadas en lugar de miles de filas. La publicación de novedades y los cambios sensibles requieren validación humana.
+- Que Power Automate con recursos institucionales de SharePoint ejecute la conciliación objetivo para detectar excepciones, con revisión humana de coincidencias ambiguas y cambios sensibles (ADR-002 del Taller 9). Power Query se conserva como prototipo o contingencia manual controlada.
 - Que exista un canal directo con Tecnología para pedir una extensión y, sobre todo, para que Tecnología avise de vuelta cuando ya quedó lista. Hoy ese aviso de retorno no existe.
 - Que el directorio deje de ser un archivo suelto y pase a ser una fuente de información institucional, con estructura, permisos e historial de cambios.
 - Usar la suite Microsoft existente y conectores estándar. La implantación depende de confirmar licencias efectivas, permisos, políticas DLP y aprobación institucional; el equipo no ha verificado esas condiciones en el tenant.
@@ -49,14 +49,14 @@ Todo el análisis que sustenta esta propuesta está documentado carpeta por carp
 | [`05-seguridad-stride/`](05-seguridad-stride/informe.md) | Amenazas, priorización y riesgo residual proyectado | 🟡 Corte 2 — preparado; sustentación pendiente |
 | [`06-normatividad/`](06-normatividad/informe.md) | Checklist normativo y brechas por validar | 🟡 Corte 2 — preparado; sustentación pendiente |
 | [`07-opportunities-solutions/`](07-opportunities-solutions/informe.md) | Propuesta de mejora, matriz de brechas, diagramas TO-BE y referencias | 🟡 Corte 3 — entregables publicados; validación pendiente |
-| `08-integracion-vistas/` | Cómo se conecta todo lo anterior en una sola arquitectura | 🔜 Corte 3 |
-| `09-presentacion-final/` | Presentación ejecutiva, plan de implementación y gobernanza | 🔜 Corte 3 |
+| [`08-integracion-vistas/`](08-integracion-vistas/informe.md) | Tablero integrado, trazabilidad y análisis entre vistas | Corte 3 — publicado |
+| [`09-presentacion-final/`](09-presentacion-final/README.md) | Presentación, matriz de riesgos corregida, gobernanza, roadmap, vistas ArchiMate y anexos | Corte 3 — paquete publicado; firma y reflexiones pendientes |
 
 ### Alcance académico y validación del cliente
 
 Según el [cronograma confirmado del profesor](https://github.com/CesarAVegaF312/AREM-Proyecto-Cliente#4-cronograma-del-semestre-confirmado), el Corte 2 comprende las carpetas **03, 04, 05 y 06**, con sustentación el **3 de octubre de 2026**. La carpeta **07** se trabaja después de esos diagnósticos: su taller está previsto para el 10 de octubre y su entrega para el Corte 3. Esta secuencia actualiza la distribución del enunciado inicial; no se omite 07 por falta de análisis.
 
-El estado académico de la tabla no equivale a aprobación del cliente, despliegue o cumplimiento institucional. Esas validaciones siguen abiertas. Última revisión documental del repositorio: **5 de noviembre de 2026**.
+El estado académico de la tabla no equivale a aprobación del cliente, despliegue o cumplimiento institucional. Esas validaciones siguen abiertas. Última revisión documental del repositorio: **13 de noviembre de 2026**.
 
 Artefactos complementarios: [esquema de datos TO-BE](03-arquitectura-c4/esquema-datos-to-be.md), [vista ArchiMate](04-infraestructura/vista-integrada-archimate.drawio) y [criterios de priorización STRIDE](05-seguridad-stride/criterios-priorizacion.md).
 
