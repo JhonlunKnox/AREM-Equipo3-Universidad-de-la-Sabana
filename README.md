@@ -1,6 +1,6 @@
 # Arquitectura Empresarial — Universidad de La Sabana
 
-**Equipo:** Adictos al Azucar · Juan Pablo Luna Zuleta, Alejandro Riveros, Martín Ortega
+**Equipo 3:** Juan Pablo Luna Zuleta, Alejandro Riveros, Martín Ortega
 **Curso:** Arquitectura Empresarial — Universidad de La Sabana
 **Cliente:** Jefatura de Cultura de Innovación y Servicio — Dirección de Desarrollo Estratégico
 
